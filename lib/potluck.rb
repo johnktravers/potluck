@@ -22,26 +22,23 @@ class Potluck
   def menu
     menu = {}
 
-    # For each category and dish
+    # Iterate over the list of categories
     get_categories.each do |cat|
-      @dishes.each do |dish|
 
-        # If the dish's category matches the iteration
-        if dish.category == cat
+      # Make a pluralized version of category name
+      plural_cat = cat.to_s.pluralize.to_sym
 
-          # Pluralize the category name
-          plural = cat.to_s.pluralize.to_sym
+      # Add sorted list of dishes to category key in menu hash
+      get_all_from_category(cat).each do |dish|
 
-          # If the plural category already exists as a key in the hash
-          if menu[plural].class == Array
-            # Add the dish name to array
-            menu[plural].push(dish.name)
+        # If the plural category already exists as a key in the hash, add dish name
+        if menu[plural_cat].class == Array
+          menu[plural_cat].push(dish.name)
 
-          else
-            # Make a new array for that key and add the dish name
-            menu[plural] = []
-            menu[plural].push(dish.name)
-          end
+        # Otherwise make a new array for that key and add the dish name
+        else
+          menu[plural_cat] = []
+          menu[plural_cat].push(dish.name)
         end
       end
     end
@@ -51,6 +48,7 @@ class Potluck
       menu[category].sort!
     end
 
+    # Return menu hash
     menu
   end
 
